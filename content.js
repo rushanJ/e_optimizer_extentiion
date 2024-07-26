@@ -1,17 +1,12 @@
 // Function to shuffle array in place
 var page_type = null;
 
-function escapeId(id) {
-  return `#${CSS.escape(id)}`;
-}
-
 async function shuffle(resultsList, array, item_title_query_selector, customer_id,item_identification_id ) {
   // Log the titles of the items before shuffling
   let sorted_array = [];
-  var clonedresultsList = resultsList;
   let items_param_string = 'http://localhost:9000/api/order_by_name/?user_id=' + encodeURIComponent(customer_id);
-  // console.log('item_title_query_selector', item_title_query_selector);
-  // console.log("type",typeof  (array[0]))
+  console.log('item_title_query_selector', item_title_query_selector);
+  console.log("type",typeof  (array[0]))
   array.forEach(item => {
     const titleElement = item.querySelector(item_title_query_selector);
     if (titleElement) {
@@ -20,12 +15,12 @@ async function shuffle(resultsList, array, item_title_query_selector, customer_i
     }
   });
 
-  // console.log(items_param_string);
+  console.log(items_param_string);
 
   try {
     const response = await fetch(items_param_string);
     const data = await response.json();
-    // console.log('API Response:', data);
+    console.log('API Response:', data);
 
     data.item_names.forEach(itemName => {
       array.forEach(item => {
@@ -35,54 +30,71 @@ async function shuffle(resultsList, array, item_title_query_selector, customer_i
         }
       });
     });
-    // console.log(array)
-    sorted_array.forEach((item, index) => {
-      // const resultsList_obj = resultsList.querySelector(item);
-      // console.log(array[index])
-      // console.log(item.getAttribute(item_identification_id))
-      const id1 = array[index].getAttribute(item_identification_id);
-      const id2 =  item.getAttribute(item_identification_id);
-      // Find the element within `resultsList` using `querySelector`
-      // console.log(array[index])
-      console.log(id1)
-      console.log("resultsList",resultsList)
-      var element1 = resultsList.querySelector(id1);
-      var element2 = resultsList.querySelector(id2);
-      // Replace or manipulate the element as needed
-      if (element1) {
-        // Do something with the element, e.g., replace it
-        // console.log("item :",item)
-        // console.log("element :",element)
-        const parent = element1.parentNode;
-        parent.insertBefore(element2, element1);
-        parent.insertBefore(element1, element2.nextSibling);
-        // resultsList.replaceChild(element,item );
-        // var element2 = resultsList.querySelectorAll(`#${id}`);
-        // console.log("element2 :",element2)
+      // Remove items in resultsList but keep the parent
+      while (resultsList.firstChild) {
+        resultsList.removeChild(resultsList.firstChild);
       }
-      else{
-        console.log("Not found")
-      }
+      console.log("resultsList after removing items" ,resultsList);
+      // Add items from sorted_array back to resultsList
+      sorted_array.forEach(item => {
+        resultsList.appendChild(item);
+      });
+      console.log("resultsList after  Add items" ,resultsList);
+    // sorted_array.forEach((item, index) => {
+    //   // const resultsList_obj = resultsList.querySelector(item);
+    //   console.log(item.getAttribute(item_identification_id))
+    //   console.log(array[index])
+    //   const id = array[index].getAttribute(item_identification_id);
+    //   // Find the element within `resultsList` using `querySelector`
+    //   console.log(id)
+    //   var element = resultsList.querySelector(`[${item_identification_id}="${id}"]`);
+    //   // var element = resultsList.querySelector(`#${id}`);
+    //   console.log(element)
+    //   // Replace or manipulate the element as needed
+    //   if (element) {
+    //     // Do something with the element, e.g., replace it
+    //     resultsList.replaceChild(item, element);
+    //   }
+    //   // if (element) {
+    //   //   // Clone the item to preserve it in the DOM
+    //   //   const itemClone = item.cloneNode(true);
+
+    //   //   // Check if element is a direct child of resultsList
+    //   //   if (1==1) {
+    //   //     // Replace the original item with the cloned item
+    //   //     resultsList.replaceChild(item, element);
+    //   //   } else {
+    //   //     // Find the parent of the element and replace it
+    //   //     console.log("parentElement")
+    //   //     const parentElement = element.parentNode;
+    //   //     console.log(parentElement)
+    //   //     if (parentElement) {
+    //   //       parentElement.replaceChild(itemClone, element);
+    //   //     } else {
+    //   //       console.error('Parent element not found for:', element);
+    //   //     }
+    //   //   }
+    //   // }
       
-    });
+    // });
   } catch (error) {
     console.error('Error :', error);
   }
 
-  // console.log(resultsList);
+  console.log(resultsList);
   return resultsList;
 }
 
 // Function to shuffle eBay search results
 async function shuffleSearchResults(title_css, list_attribute, list_attribute_value, item_title_query_selector, customer_id, list_selector_type, list_css, items_to_drop,item_identification_id) {
-  // console.log('title_css :', title_css);
-  // console.log('Shuffling eBay search results...');
+  console.log('title_css :', title_css);
+  console.log('Shuffling eBay search results...');
   let resultsList = null;
   // Find the results list container
   resultsList = document.querySelector(title_css);
-  // console.log(resultsList)
+  console.log(resultsList)
   if (resultsList) {
-    // console.log('Results list:', resultsList);
+    console.log('Results list:', resultsList);
 
     // Select all list items within the results list
     let listItems = null;
@@ -91,9 +103,9 @@ async function shuffleSearchResults(title_css, list_attribute, list_attribute_va
     } else {
       listItems = Array.from(resultsList.querySelectorAll(list_attribute));
     }
-    // console.log("itemList", listItems)
+    console.log("itemList", listItems)
     if (listItems.length > 2) {
-      // console.log('Found more than 2 items:', listItems.length);
+      console.log('Found more than 2 items:', listItems.length);
 
       // Split the list items into first two and the rest
       var firstTwoItems = []

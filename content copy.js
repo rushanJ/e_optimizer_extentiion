@@ -46,26 +46,26 @@ async function shuffle(resultsList, array, item_title_query_selector, customer_i
         // Do something with the element, e.g., replace it
         resultsList.replaceChild(item, element);
       }
-    //   if (element) {
-    //     // Clone the item to preserve it in the DOM
-    //     // const itemClone = item.cloneNode(true);
+      // if (element) {
+      //   // Clone the item to preserve it in the DOM
+      //   const itemClone = item.cloneNode(true);
 
-    //     // Check if element is a direct child of resultsList
-    //     if (1==1) {
-    //       // Replace the original item with the cloned item
-    //       resultsList.replaceChild(item, element);
-    //     } else {
-    //       // Find the parent of the element and replace it
-    //       console.log("parentElement")
-    //       const parentElement = element.parentNode;
-    //       console.log(parentElement)
-    //       if (parentElement) {
-    //         parentElement.replaceChild(itemClone, element);
-    //       } else {
-    //         console.error('Parent element not found for:', element);
-    //       }
-    //     }
-    //   }
+      //   // Check if element is a direct child of resultsList
+      //   if (1==1) {
+      //     // Replace the original item with the cloned item
+      //     resultsList.replaceChild(item, element);
+      //   } else {
+      //     // Find the parent of the element and replace it
+      //     console.log("parentElement")
+      //     const parentElement = element.parentNode;
+      //     console.log(parentElement)
+      //     if (parentElement) {
+      //       parentElement.replaceChild(itemClone, element);
+      //     } else {
+      //       console.error('Parent element not found for:', element);
+      //     }
+      //   }
+      // }
       
     });
   } catch (error) {
